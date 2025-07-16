@@ -1,43 +1,34 @@
 package com.daivcode.tasks.domain.entities;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "tasks")
-public class Task {
+@Table(name = "task_lists")
+public class TaskList {
 
     @Id
-    @GeneratedValue(strategy = jakarta.persistence.GenerationType.AUTO)
+    @GeneratedValue(strategy = jakarta.persistence.GenerationType.UUID)
     @Column(name = "id", nullable = false, updatable = false)
     private UUID id;
 
     @Column(name = "title", nullable = false)
-    private String title;
+    private String tittle;
 
     @Column(name = "description")
     private String description;
 
-    @Column(name = "due_date", nullable = false)
-    private LocalDateTime dueDate;
-
-    @Column(name = "priority", nullable = false)
-    private TaskPriority priority;
-
-    @ManyToOne(fetch = jakarta.persistence.FetchType.LAZY)
-    @JoinColumn(name = "task_list_id", nullable = false)
-    private TaskList taskList;
-
-    @Column(name = "status", nullable = false)
-    private TaskStatus status;
+    @OneToMany(mappedBy = "taskList", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    private List<Task> tasks;
 
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
@@ -45,18 +36,15 @@ public class Task {
     @Column(name = "updated_at", nullable = false)
     private LocalDateTime updatedAt;
 
-    public Task() {
+    public TaskList() {
     }
 
-    public Task(UUID id, String title, String description, LocalDateTime dueDate, TaskPriority priority,
-            TaskList taskList, TaskStatus status, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public TaskList(UUID id, String tittle, String description, List<Task> tasks, LocalDateTime createdAt,
+            LocalDateTime updatedAt) {
         this.id = id;
-        this.title = title;
+        this.tittle = tittle;
         this.description = description;
-        this.dueDate = dueDate;
-        this.priority = priority;
-        this.taskList = taskList;
-        this.status = status;
+        this.tasks = tasks;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
@@ -69,12 +57,12 @@ public class Task {
         this.id = id;
     }
 
-    public String getTitle() {
-        return title;
+    public String getTittle() {
+        return tittle;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setTittle(String tittle) {
+        this.tittle = tittle;
     }
 
     public String getDescription() {
@@ -85,36 +73,12 @@ public class Task {
         this.description = description;
     }
 
-    public LocalDateTime getDueDate() {
-        return dueDate;
+    public List<Task> getTasks() {
+        return tasks;
     }
 
-    public void setDueDate(LocalDateTime dueDate) {
-        this.dueDate = dueDate;
-    }
-
-    public TaskPriority getPriority() {
-        return priority;
-    }
-
-    public void setPriority(TaskPriority priority) {
-        this.priority = priority;
-    }
-
-    public TaskList getTaskList() {
-        return taskList;
-    }
-
-    public void setTaskList(TaskList taskList) {
-        this.taskList = taskList;
-    }
-
-    public TaskStatus getStatus() {
-        return status;
-    }
-
-    public void setStatus(TaskStatus status) {
-        this.status = status;
+    public void setTasks(List<Task> tasks) {
+        this.tasks = tasks;
     }
 
     public LocalDateTime getCreatedAt() {
@@ -138,12 +102,9 @@ public class Task {
         final int prime = 31;
         int result = 1;
         result = prime * result + ((id == null) ? 0 : id.hashCode());
-        result = prime * result + ((title == null) ? 0 : title.hashCode());
+        result = prime * result + ((tittle == null) ? 0 : tittle.hashCode());
         result = prime * result + ((description == null) ? 0 : description.hashCode());
-        result = prime * result + ((dueDate == null) ? 0 : dueDate.hashCode());
-        result = prime * result + ((priority == null) ? 0 : priority.hashCode());
-        result = prime * result + ((taskList == null) ? 0 : taskList.hashCode());
-        result = prime * result + ((status == null) ? 0 : status.hashCode());
+        result = prime * result + ((tasks == null) ? 0 : tasks.hashCode());
         result = prime * result + ((createdAt == null) ? 0 : createdAt.hashCode());
         result = prime * result + ((updatedAt == null) ? 0 : updatedAt.hashCode());
         return result;
@@ -157,35 +118,26 @@ public class Task {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        Task other = (Task) obj;
+        TaskList other = (TaskList) obj;
         if (id == null) {
             if (other.id != null)
                 return false;
         } else if (!id.equals(other.id))
             return false;
-        if (title == null) {
-            if (other.title != null)
+        if (tittle == null) {
+            if (other.tittle != null)
                 return false;
-        } else if (!title.equals(other.title))
+        } else if (!tittle.equals(other.tittle))
             return false;
         if (description == null) {
             if (other.description != null)
                 return false;
         } else if (!description.equals(other.description))
             return false;
-        if (dueDate == null) {
-            if (other.dueDate != null)
+        if (tasks == null) {
+            if (other.tasks != null)
                 return false;
-        } else if (!dueDate.equals(other.dueDate))
-            return false;
-        if (priority != other.priority)
-            return false;
-        if (taskList == null) {
-            if (other.taskList != null)
-                return false;
-        } else if (!taskList.equals(other.taskList))
-            return false;
-        if (status != other.status)
+        } else if (!tasks.equals(other.tasks))
             return false;
         if (createdAt == null) {
             if (other.createdAt != null)
@@ -202,9 +154,8 @@ public class Task {
 
     @Override
     public String toString() {
-        return "Task [id=" + id + ", title=" + title + ", description=" + description + ", dueDate=" + dueDate
-                + ", priority=" + priority + ", taskList=" + taskList + ", status=" + status + ", createdAt="
-                + createdAt + ", updatedAt=" + updatedAt + "]";
+        return "TaskList [id=" + id + ", tittle=" + tittle + ", description=" + description + ", tasks=" + tasks
+                + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + "]";
     }
 
     
