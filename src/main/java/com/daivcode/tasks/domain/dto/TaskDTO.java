@@ -3,7 +3,6 @@ package com.daivcode.tasks.domain.dto;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-import com.daivcode.tasks.domain.entities.Task;
 import com.daivcode.tasks.domain.entities.TaskPriority;
 import com.daivcode.tasks.domain.entities.TaskStatus;
 
