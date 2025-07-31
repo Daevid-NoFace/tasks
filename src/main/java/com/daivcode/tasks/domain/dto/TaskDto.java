@@ -6,7 +6,7 @@ import java.util.UUID;
 import com.daivcode.tasks.domain.entities.TaskPriority;
 import com.daivcode.tasks.domain.entities.TaskStatus;
 
-public record TaskDTO(
+public record TaskDto(
 
     UUID id,
     String title,

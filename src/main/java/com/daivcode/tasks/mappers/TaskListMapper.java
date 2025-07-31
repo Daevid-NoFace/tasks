@@ -1,11 +1,11 @@
 package com.daivcode.tasks.mappers;
 
-import com.daivcode.tasks.domain.dto.TaskListDTO;
+import com.daivcode.tasks.domain.dto.TaskListDto;
 import com.daivcode.tasks.domain.entities.TaskList;
 
 public interface TaskListMapper {
 
-    TaskList fromDto(TaskListDTO taskListDto);
+    TaskList fromDto(TaskListDto taskListDto);
 
-    TaskListDTO toDto(TaskList taskList);
+    TaskListDto toDto(TaskList taskList);
 }

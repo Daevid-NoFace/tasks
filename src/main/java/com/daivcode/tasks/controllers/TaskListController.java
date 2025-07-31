@@ -4,9 +4,12 @@ import java.util.List;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.daivcode.tasks.domain.dto.TaskListDTO;
+import com.daivcode.tasks.domain.dto.TaskListDto;
+import com.daivcode.tasks.domain.entities.TaskList;
 import com.daivcode.tasks.mappers.TaskListMapper;
 import com.daivcode.tasks.services.TaskListService;
 
@@ -23,11 +26,21 @@ public class TaskListController {
     }
 
     @GetMapping
-    public List<TaskListDTO> listTaskLists() {
+    public List<TaskListDto> listTaskLists() {
         
         return taskListService.listTaskLists().stream()
             .map(taskListMapper::toDto)
             .toList();
 
+    }
+
+    @PostMapping
+    public TaskListDto createTaskList (@RequestBody TaskListDto taskListDto) {
+        
+        TaskList createdTaskList = taskListService.createTaskList(
+            taskListMapper.fromDto(taskListDto)
+        );
+        
+        return taskListMapper.toDto(createdTaskList);
     }
 }

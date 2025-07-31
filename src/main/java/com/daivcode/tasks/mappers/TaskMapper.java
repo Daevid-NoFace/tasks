@@ -1,11 +1,11 @@
 package com.daivcode.tasks.mappers;
 
-import com.daivcode.tasks.domain.dto.TaskDTO;
+import com.daivcode.tasks.domain.dto.TaskDto;
 import com.daivcode.tasks.domain.entities.Task;
 
 public interface TaskMapper {
 
-    Task fromDto(TaskDTO taskDto);
+    Task fromDto(TaskDto taskDto);
 
-    TaskDTO toDto(Task task);
+    TaskDto toDto(Task task);
 }

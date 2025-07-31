@@ -8,7 +8,7 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Component;
 
-import com.daivcode.tasks.domain.dto.TaskListDTO;
+import com.daivcode.tasks.domain.dto.TaskListDto;
 import com.daivcode.tasks.domain.entities.Task;
 import com.daivcode.tasks.domain.entities.TaskList;
 import com.daivcode.tasks.domain.entities.TaskStatus;
@@ -23,7 +23,7 @@ public class TaskListMapperImpl implements TaskListMapper {
     }
 
     @Override
-    public TaskList fromDto(TaskListDTO taskListDto) {
+    public TaskList fromDto(TaskListDto taskListDto) {
         // TODO Auto-generated method stub
         return new TaskList(
             taskListDto.id(),
@@ -36,9 +36,9 @@ public class TaskListMapperImpl implements TaskListMapper {
     }
 
     @Override
-    public TaskListDTO toDto(TaskList taskList) {
+    public TaskListDto toDto(TaskList taskList) {
         // TODO Auto-generated method stub
-        return new TaskListDTO(
+        return new TaskListDto(
             taskList.getId(),
             taskList.getTittle(),
             taskList.getDescription(),

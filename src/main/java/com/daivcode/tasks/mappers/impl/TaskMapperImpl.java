@@ -2,7 +2,7 @@ package com.daivcode.tasks.mappers.impl;
 
 import org.springframework.stereotype.Component;
 
-import com.daivcode.tasks.domain.dto.TaskDTO;
+import com.daivcode.tasks.domain.dto.TaskDto;
 import com.daivcode.tasks.domain.entities.Task;
 import com.daivcode.tasks.mappers.TaskMapper;
 
@@ -10,7 +10,7 @@ import com.daivcode.tasks.mappers.TaskMapper;
 public class TaskMapperImpl implements TaskMapper {
 
     @Override
-    public Task fromDto(TaskDTO taskDto) {
+    public Task fromDto(TaskDto taskDto) {
         // TODO Auto-generated method stub
         return new Task(
             taskDto.id(),
@@ -26,9 +26,9 @@ public class TaskMapperImpl implements TaskMapper {
     }
 
     @Override
-    public TaskDTO toDto(Task task) {
+    public TaskDto toDto(Task task) {
         // TODO Auto-generated method stub
-        return new TaskDTO(
+        return new TaskDto(
             task.getId(),
             task.getTitle(),
             task.getDescription(),
