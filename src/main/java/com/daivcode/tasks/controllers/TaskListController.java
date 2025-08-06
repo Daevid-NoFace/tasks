@@ -5,6 +5,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,7 +18,6 @@ import com.daivcode.tasks.domain.entities.TaskList;
 import com.daivcode.tasks.mappers.TaskListMapper;
 import com.daivcode.tasks.services.TaskListService;
 import org.springframework.web.bind.annotation.PutMapping;
-
 
 @RestController
 @RequestMapping(path = "/task-lists")
@@ -33,20 +33,19 @@ public class TaskListController {
 
     @GetMapping
     public List<TaskListDto> listTaskLists() {
-        
+
         return taskListService.listTaskLists().stream()
-            .map(taskListMapper::toDto)
-            .toList();
+                .map(taskListMapper::toDto)
+                .toList();
 
     }
 
     @PostMapping
-    public TaskListDto createTaskList (@RequestBody TaskListDto taskListDto) {
-        
+    public TaskListDto createTaskList(@RequestBody TaskListDto taskListDto) {
+
         TaskList createdTaskList = taskListService.createTaskList(
-            taskListMapper.fromDto(taskListDto)
-        );
-        
+                taskListMapper.fromDto(taskListDto));
+
         return taskListMapper.toDto(createdTaskList);
     }
 
@@ -57,14 +56,20 @@ public class TaskListController {
 
     @PutMapping(path = "/{task_list_id}")
     public TaskListDto updateTaskListDto(
-        @PathVariable("task_list_id") UUID taskListId,
-        @RequestBody TaskListDto taskListDto) {
+            @PathVariable("task_list_id") UUID taskListId,
+            @RequestBody TaskListDto taskListDto) {
 
         TaskList updatedTaskList = taskListService.updateTaskList(
-            taskListId,
-            taskListMapper.fromDto(taskListDto)
-        );
+                taskListId,
+                taskListMapper.fromDto(taskListDto));
 
         return taskListMapper.toDto(updatedTaskList);
+    }
+
+    @DeleteMapping(path = "/{task_list_id}")
+    public void deleteTaskList(
+            @PathVariable("task_list_id") UUID taskListId) {
+        System.out.println("Deleting task list with ID: " + taskListId);
+        taskListService.deleteTaskList(taskListId);
     }
 }
