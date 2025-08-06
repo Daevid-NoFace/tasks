@@ -16,6 +16,8 @@ import com.daivcode.tasks.domain.dto.TaskListDto;
 import com.daivcode.tasks.domain.entities.TaskList;
 import com.daivcode.tasks.mappers.TaskListMapper;
 import com.daivcode.tasks.services.TaskListService;
+import org.springframework.web.bind.annotation.PutMapping;
+
 
 @RestController
 @RequestMapping(path = "/task-lists")
@@ -51,5 +53,18 @@ public class TaskListController {
     @GetMapping("/{task_list_id}")
     public Optional<TaskListDto> getTaskList(@PathVariable("task_list_id") UUID taskListId) {
         return taskListService.getTaskList(taskListId).map(taskListMapper::toDto);
+    }
+
+    @PutMapping(path = "/{task_list_id}")
+    public TaskListDto updateTaskListDto(
+        @PathVariable("task_list_id") UUID taskListId,
+        @RequestBody TaskListDto taskListDto) {
+
+        TaskList updatedTaskList = taskListService.updateTaskList(
+            taskListId,
+            taskListMapper.fromDto(taskListDto)
+        );
+
+        return taskListMapper.toDto(updatedTaskList);
     }
 }

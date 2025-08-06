@@ -2,6 +2,7 @@ package com.daivcode.tasks.services.impl;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -54,5 +55,29 @@ public class TaskListServiceImpl implements TaskListService {
     @Override
     public Optional<TaskList> getTaskList(UUID ID) {
         return taskListRepository.findById(ID);
+    }
+
+    @Override
+    public TaskList updateTaskList(UUID id, TaskList taskList) {
+
+        System.out.println("Updating task list: " + taskList);
+        System.out.println("Path ID: " + id);
+
+        if (taskList.getId() == null) {
+            throw new IllegalArgumentException("Task list ID must be present for update!");
+        }
+
+        if (!Objects.equals(taskList.getId(), id)) {
+            throw new IllegalArgumentException("Task list ID in path and body must match!");
+        }
+
+        TaskList existingTaskList = taskListRepository.findById(id)
+            .orElseThrow(() -> new IllegalArgumentException("Task list with ID " + id + " not found!"));
+
+        existingTaskList.setTitle(taskList.getTitle());
+        existingTaskList.setDescription(taskList.getDescription());
+        existingTaskList.setUpdatedAt(LocalDateTime.now());
+
+        return taskListRepository.save(existingTaskList);
     }
 }
