@@ -27,7 +27,7 @@ public class TaskListMapperImpl implements TaskListMapper {
         // TODO Auto-generated method stub
         return new TaskList(
             taskListDto.id(),
-            taskListDto.tittle(),
+            taskListDto.title(),
             taskListDto.description(),
             Optional.ofNullable(taskListDto.tasks()).map(tasks -> tasks.stream().map(taskMapper::fromDto).toList()).orElse(null),
             null,
@@ -40,7 +40,7 @@ public class TaskListMapperImpl implements TaskListMapper {
         // TODO Auto-generated method stub
         return new TaskListDto(
             taskList.getId(),
-            taskList.getTittle(),
+            taskList.getTitle(),
             taskList.getDescription(),
             Optional.ofNullable(taskList.getTasks()).map(List::size).orElse(0),
             calculateProgress(taskList.getTasks()),

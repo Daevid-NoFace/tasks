@@ -22,7 +22,7 @@ public class TaskList {
     private UUID id;
 
     @Column(name = "title", nullable = false)
-    private String tittle;
+    private String title;
 
     @Column(name = "description")
     private String description;
@@ -42,7 +42,7 @@ public class TaskList {
     public TaskList(UUID id, String tittle, String description, List<Task> tasks, LocalDateTime createdAt,
             LocalDateTime updatedAt) {
         this.id = id;
-        this.tittle = tittle;
+        this.title = tittle;
         this.description = description;
         this.tasks = tasks;
         this.createdAt = createdAt;
@@ -57,12 +57,12 @@ public class TaskList {
         this.id = id;
     }
 
-    public String getTittle() {
-        return tittle;
+    public String getTitle() {
+        return title;
     }
 
-    public void setTittle(String tittle) {
-        this.tittle = tittle;
+    public void setTitle(String tittle) {
+        this.title = tittle;
     }
 
     public String getDescription() {
@@ -102,7 +102,7 @@ public class TaskList {
         final int prime = 31;
         int result = 1;
         result = prime * result + ((id == null) ? 0 : id.hashCode());
-        result = prime * result + ((tittle == null) ? 0 : tittle.hashCode());
+        result = prime * result + ((title == null) ? 0 : title.hashCode());
         result = prime * result + ((description == null) ? 0 : description.hashCode());
         result = prime * result + ((tasks == null) ? 0 : tasks.hashCode());
         result = prime * result + ((createdAt == null) ? 0 : createdAt.hashCode());
@@ -124,10 +124,10 @@ public class TaskList {
                 return false;
         } else if (!id.equals(other.id))
             return false;
-        if (tittle == null) {
-            if (other.tittle != null)
+        if (title == null) {
+            if (other.title != null)
                 return false;
-        } else if (!tittle.equals(other.tittle))
+        } else if (!title.equals(other.title))
             return false;
         if (description == null) {
             if (other.description != null)
@@ -154,7 +154,7 @@ public class TaskList {
 
     @Override
     public String toString() {
-        return "TaskList [id=" + id + ", tittle=" + tittle + ", description=" + description + ", tasks=" + tasks
+        return "TaskList [id=" + id + ", title=" + title + ", description=" + description + ", tasks=" + tasks
                 + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + "]";
     }
 

@@ -6,7 +6,7 @@ import java.util.UUID;
 public record TaskListDto(
 
     UUID id,
-    String tittle,
+    String title,
     String description,
     Integer count,
     Double progress,

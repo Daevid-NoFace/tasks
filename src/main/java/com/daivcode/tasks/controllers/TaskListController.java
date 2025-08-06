@@ -10,13 +10,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.daivcode.tasks.domain.dto.TaskListDto;
 import com.daivcode.tasks.domain.entities.TaskList;
 import com.daivcode.tasks.mappers.TaskListMapper;
 import com.daivcode.tasks.services.TaskListService;
 
-@Controller
+@RestController
 @RequestMapping(path = "/task-lists")
 public class TaskListController {
 
