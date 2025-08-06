@@ -2,6 +2,8 @@ package com.daivcode.tasks.services.impl;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 import com.daivcode.tasks.repositories.TaskListRepository;
@@ -47,4 +49,8 @@ public class TaskListServiceImpl implements TaskListService {
         ));
     }
 
+    @Override
+    public Optional<TaskList> getTaskList(UUID ID) {
+        return taskListRepository.findById(ID);
+    }
 }

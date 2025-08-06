@@ -1,9 +1,12 @@
 package com.daivcode.tasks.controllers;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -42,5 +45,10 @@ public class TaskListController {
         );
         
         return taskListMapper.toDto(createdTaskList);
+    }
+
+    @GetMapping("/{task_list_id}")
+    public Optional<TaskListDto> getTaskList(@PathVariable("task_list_id") UUID taskListId) {
+        return taskListService.getTaskList(taskListId).map(taskListMapper::toDto);
     }
 }
