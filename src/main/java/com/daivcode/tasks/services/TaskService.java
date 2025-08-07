@@ -8,4 +8,6 @@ import com.daivcode.tasks.domain.entities.Task;
 public interface TaskService {
 
     List<Task> listTasks(UUID taskListId);
+
+    Task createTask(UUID taskListId, Task task);
 }
