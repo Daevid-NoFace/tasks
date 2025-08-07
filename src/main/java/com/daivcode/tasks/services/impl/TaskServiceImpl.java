@@ -2,6 +2,7 @@ package com.daivcode.tasks.services.impl;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -14,6 +15,8 @@ import com.daivcode.tasks.domain.entities.TaskStatus;
 import com.daivcode.tasks.repositories.TaskListRepository;
 import com.daivcode.tasks.repositories.TaskRepository;
 import com.daivcode.tasks.services.TaskService;
+
+import jakarta.transaction.Transactional;
 
 @Service
 public class TaskServiceImpl implements TaskService {
@@ -34,12 +37,12 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public Task createTask(UUID taskListId, Task task) {
-        
+
         if (null != task.getId()) {
             throw new IllegalArgumentException("Task ID must be null for a new task");
         }
 
-        if(null == task.getTitle() || task.getTitle().isBlank()) {
+        if (null == task.getTitle() || task.getTitle().isBlank()) {
             throw new IllegalArgumentException("Task title cannot be null or blank");
         }
 
@@ -53,16 +56,15 @@ public class TaskServiceImpl implements TaskService {
         LocalDateTime now = LocalDateTime.now();
 
         Task newTask = new Task(
-            null,
-            task.getTitle(),
-            task.getDescription(),
-            task.getDueDate(),
-            taskPriority,
-            taskList,
-            taskStatus,
-            now,
-            now
-        );
+                null,
+                task.getTitle(),
+                task.getDescription(),
+                task.getDueDate(),
+                taskPriority,
+                taskList,
+                taskStatus,
+                now,
+                now);
 
         return taskRepository.save(newTask);
     }
@@ -75,20 +77,40 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public Task updateTask(UUID taskListId, UUID taskId, Task task) {
 
+        if (null == task.getId()) {
+            throw new IllegalArgumentException("Task ID cannot be null for an update operation");
+        }
+
+        if (!Objects.equals(taskId, task.getId())) {
+            throw new IllegalArgumentException("Task ID in the path does not match the task ID in the request body");
+        }
+
+        if (null == task.getPriority()) {
+            throw new IllegalArgumentException("Task priority cannot be null");
+        }
+
+        if (null == task.getStatus()) {
+            throw new IllegalArgumentException("Task status cannot be null");
+        }
+
+        System.out.println("Updating task with ID: " + taskId);
+
         Task existingTask = taskRepository.findById(taskId)
                 .orElseThrow(() -> new IllegalArgumentException("Task not found with ID: " + taskId));
-
-        if (!existingTask.getTaskList().getId().equals(taskListId)) {
-            throw new IllegalArgumentException("Task does not belong to the specified task list");
-        }
 
         existingTask.setTitle(task.getTitle());
         existingTask.setDescription(task.getDescription());
         existingTask.setDueDate(task.getDueDate());
-        existingTask.setPriority(Optional.ofNullable(task.getPriority()).orElse(existingTask.getPriority()));
-        existingTask.setStatus(Optional.ofNullable(task.getStatus()).orElse(existingTask.getStatus()));
+        existingTask.setPriority(task.getPriority());
+        existingTask.setStatus(task.getStatus());
         existingTask.setUpdatedAt(LocalDateTime.now());
 
         return taskRepository.save(existingTask);
+    }
+
+    @Transactional
+    @Override
+    public void deleteTask(UUID taskListId, UUID taskId) {
+        taskRepository.deleteByTaskListIdAndId(taskListId, taskId);
     }
 }
