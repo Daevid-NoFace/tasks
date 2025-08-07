@@ -9,6 +9,7 @@ import com.daivcode.tasks.mappers.TaskMapper;
 import com.daivcode.tasks.services.TaskService;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.web.bind.annotation.GetMapping;
@@ -47,5 +48,21 @@ public class TaskController {
         return taskMapper.toDto(createdTask);
     }
     
-    
+    @GetMapping(path = "/{task_id}")
+    public Optional<TaskDto> getTask(
+            @PathVariable("task_list_id") UUID taskListId,
+            @PathVariable("task_id") UUID taskId) {
+        // Fetch the task using the service and map it to DTO        
+        return taskService.getTask(taskListId, taskId)
+                .map(taskMapper::toDto);
+    }
+
+    @PutMapping(path = "/{task_id}")
+    public TaskDto updateTask(
+            @PathVariable("task_list_id") UUID taskListId,
+            @PathVariable("task_id") UUID taskId,
+            @RequestBody TaskDto taskDto) {
+        Task updatedTask = taskService.updateTask(taskListId, taskId, taskMapper.fromDto(taskDto));
+        return taskMapper.toDto(updatedTask);
+    }
 }
